@@ -4,6 +4,11 @@ import Hero from "./Components/Hero";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ProjectDetails from "./Components/ProjectDetails";
 import ProfilePage from "./Components/ProfilePage";
+import Dashboard from "./Components/Dashboard";
+import Payouts from "./Components/Payouts";
+import MyProducts from "./Components/MyProducts";
+import NewProductForm from "./Components/NewProductForm";
+import DashboardMain from "./Components/DashboardMain";
 
 const App = () => {
   return (
@@ -13,7 +18,13 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Hero />} />
           <Route path="/:projectdetails" element={<ProjectDetails />} />
-          <Route path="/profile" element={<ProfilePage/>}/>
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/dashboard" element={<Dashboard />}>
+            <Route path="" element={<DashboardMain />} />
+            <Route path="payouts" element={<Payouts />} />
+            <Route path="products" element={<MyProducts />} />
+          </Route>
+          <Route path="/new" element={<NewProductForm />} />
         </Routes>
       </BrowserRouter>
     </div>

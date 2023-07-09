@@ -4,6 +4,14 @@ const cors = require("cors");
 const app = express();
 const connectDB = require("./config/db.js");
 
+const AWS = require("aws-sdk");
+
+AWS.config.update({
+  accessKeyId: process.env.ACCESS_KEY,
+  secretAccessKey: process.env.ACCESS_SECRET,
+});
+
+
 const ProductRoutes = require("./routes/ProductRoutes.js");
 
 connectDB();

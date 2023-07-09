@@ -88,9 +88,11 @@ export default function Profile() {
             <Avatar src={user?.picture} /> Profile
           </MenuItem>
         </Link>
-        <MenuItem onClick={handleClose}>
-          <Avatar /> Dashboard
-        </MenuItem>
+        <Link to={"/dashboard"}>
+          <MenuItem onClick={handleClose}>
+            <Avatar /> Dashboard
+          </MenuItem>
+        </Link>
         <Divider />
         <MenuItem onClick={handleClose}>
           <ListItemIcon>

@@ -7,12 +7,16 @@ const ProductSchema = new Schema({
     type: String,
     required: true,
   },
+  user: {
+    type: String,
+    required: true,
+  },
   description: {
     type: String,
     required: true,
   },
   features: {
-    type: String,
+    type: [String],
     required: true,
   },
   image: {

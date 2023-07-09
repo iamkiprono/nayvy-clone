@@ -13,7 +13,7 @@ const Header = () => {
   console.log(user);
   return (
     <div className="border">
-      <div className="flex items-center justify-between p-6 max-w-7xl m-auto ">
+      <div className="flex items-center justify-between p-4 max-w-7xl m-auto ">
         <div className="text-lg font-bold">
           <Link to={"/"}>Nayvy</Link>
         </div>
