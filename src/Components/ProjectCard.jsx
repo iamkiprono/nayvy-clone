@@ -14,7 +14,7 @@ export default function ProductCard({ project }) {
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
         sx={{ height: 200 }}
-        image={project.projectImage}
+        image={project.image}
         title="green iguana"
       />
       <CardContent>
@@ -26,18 +26,18 @@ export default function ProductCard({ project }) {
           }}
         >
           <Typography gutterBottom variant="h5" component="div">
-            {project.projectTitle}
+            {project.name}
           </Typography>
           <Typography className="bg-[#DCFCE7] p-1 rounded-xl">
             {project.live && "Live"}
           </Typography>
         </Box>
         <Typography variant="body2" color="#4b5563">
-          {project.projectDesc}
+          {project.description}
         </Typography>
         <Typography sx={{ color: "#4b5563" }}>{project.price} USD</Typography>
         <CardActions>
-          <Link to={project.projectTitle}>
+          <Link to={project._id}>
             <Button variant="outlined">Details</Button>
           </Link>
         </CardActions>

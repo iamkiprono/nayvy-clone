@@ -4,6 +4,7 @@ const express = require("express");
 const {
   addProduct,
   getProducts,
+  getProduct,
 } = require("../controllers/ProductsController");
 const router = express.Router();
 const RequireAuth = require("../Middleware/RequireAuth");
@@ -14,5 +15,6 @@ const upload = multer({ dest: "uploads/" });
 
 router.post("/", RequireAuth, upload.single("image"), uploadImage, addProduct);
 router.get("/", getProducts);
+router.get("/:id", getProduct);
 
 module.exports = router;

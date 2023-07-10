@@ -2,18 +2,28 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import Projects from "../Data/Projets";
 import ProjectDetailsCard from "./ProjectDetailsCard";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const ProjectDetails = () => {
-  const { projectdetails } = useParams();
-  console.table(Projects);
+  const [Project, setProject] = useState([]);
+  const { id } = useParams();
+  const getSingleProject = async () => {
+    const res = await fetch(`http://localhost:5000/products/${id}`);
+    const data = await res.json();
+    setProject(data);
+    console.log(data);
+  };
+
+  useEffect(() => {
+    getSingleProject();
+  }, []);
   return (
     <div>
       <div className="max-w-7xl m-auto flex justify-center p-6">
-        {Projects.filter((proj) => proj.projectTitle === projectdetails).map(
-          (project) => {
-            return <ProjectDetailsCard Projects={project} />;
-          }
-        )}
+        {Project.map((project) => {
+          return <ProjectDetailsCard key={project._id} Projects={project} />;
+        })}
       </div>
     </div>
   );

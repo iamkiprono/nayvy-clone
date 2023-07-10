@@ -14,6 +14,7 @@ const s3 = new AWS.S3();
 const uploadImage = async (req, res, next) => {
   try {
     const file = req.file;
+    console.log(file)
     if (!file) {
       throw Error("No file selected");
     }
@@ -27,13 +28,15 @@ const uploadImage = async (req, res, next) => {
       Key: key,
       Body: fileContent,
     };
-
+    
     const response = await s3.upload(params).promise();
     console.log("Image uploaded successfully:", response);
-
+    
+    
     // Delete the temporary file
     fs.unlinkSync(file.path);
 
+    req.filePath = file.path;
     req.loc = response.Location;
     next();
 
@@ -42,7 +45,7 @@ const uploadImage = async (req, res, next) => {
     //   location: response.Location,
     // });
   } catch (error) {
-    console.error("Error uploading image:", error);
+    // console.error("Error uploading image:", error);
     res.status(500).json({ error: error.message });
   }
 };

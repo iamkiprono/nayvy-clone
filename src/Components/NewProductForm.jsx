@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import S3FORM from "./S3FORM";
 import axios from "axios";
+// import imageCompression from "browser-image-compression";
 
 const NewProductForm = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -21,6 +22,10 @@ const NewProductForm = () => {
   const [banner, setBanner] = useState(null);
 
   const currencies = [
+    {
+      value: "",
+      label: "",
+    },
     {
       value: "USD",
       label: "$",
@@ -53,10 +58,19 @@ const NewProductForm = () => {
     setFeature("");
   };
 
-  const addProduct = async () => {
+  const addProduct = async (e) => {
+    e.preventDefault();
+
     try {
       const token = await getAccessTokenSilently();
+      // const options = {
+      //   maxSizeMB: 1,
+      //   maxWidthOrHeight: 1920,
+      // };
+      
 
+      // const compressedFile = await imageCompression(banner, options);
+      // console.table(compressedFile);
       const formData = new FormData();
       formData.append("image", banner);
       formData.append("name", name);
@@ -78,23 +92,25 @@ const NewProductForm = () => {
       );
       console.log(res);
       const newProduct = await res.data;
-      
+
       console.log(newProduct);
     } catch (error) {
-      console.log(error)
-      console.log(error.response.data.error)
+      console.log(error);
+      console.log(error.response?.data?.error);
       // console.log({ error: error.message });
     }
   };
   return (
-    <div className="max-w-7xl m-auto p-6">
+    <form className="max-w-7xl m-auto p-6">
       {/* <S3FORM /> */}
+   
       <TextField
         onChange={(e) => setname(e.target.value)}
         sx={{
           margin: "20px 0",
         }}
         fullWidth
+        required
         size="lg"
         label="Name of project"
       />
@@ -108,10 +124,12 @@ const NewProductForm = () => {
         id="filled-multiline-flexible"
         label="Description"
         multiline
+        required
       />
       <p>Tell use what your code is about</p>
 
       <TextField
+        required
         value={feature}
         onChange={(e) => setFeature(e.target.value)}
         sx={{
@@ -131,6 +149,7 @@ const NewProductForm = () => {
       </Button>
       <p className="mt-4">Banner:</p>
       <Input
+        required
         accept="image/*"
         onChange={(e) => {
           const file = e.target.files[0];
@@ -144,6 +163,7 @@ const NewProductForm = () => {
         type="file"
       />
       <TextField
+        required
         onChange={(e) => setLink(e.target.value)}
         sx={{
           margin: "20px 0",
@@ -154,12 +174,14 @@ const NewProductForm = () => {
       />
       <div className="flex md:flex-row flex-col gap-4">
         <TextField
+          required
           onChange={(e) => setPrice(e.target.value)}
           type="Number"
           label="Price"
           fullWidth
         />
         <TextField
+          required
           onChange={(e) => setCurrency(e.target.value)}
           fullWidth
           id="outlined-select-currency-native"
@@ -179,13 +201,14 @@ const NewProductForm = () => {
         </TextField>
       </div>
       <Button
-        onClick={() => addProduct()}
+        type="submit"
+        onClick={addProduct}
         sx={{ margin: "20px 0" }}
         variant="contained"
       >
         Create Product
       </Button>
-    </div>
+    </form>
   );
 };
 
