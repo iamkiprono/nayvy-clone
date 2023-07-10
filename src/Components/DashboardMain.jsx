@@ -17,7 +17,7 @@ const DashboardMain = () => {
             </Link>
           </div>
         </div>
-        <div className="flex gap-2 mt-10 items-center">
+        <div className="flex flex-col md:flex-row gap-2 mt-10 items-center">
           <DashboardCard title="No of products" />
           <DashboardCard title="No of buyers" />
         </div>
