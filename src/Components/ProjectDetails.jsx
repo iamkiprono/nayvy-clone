@@ -9,7 +9,7 @@ const ProjectDetails = () => {
   const [Project, setProject] = useState([]);
   const { id } = useParams();
   const getSingleProject = async () => {
-    const res = await fetch(`http://localhost:5000/products/${id}`);
+    const res = await fetch(`https://nayvy-clone.vercel.app//products/${id}`);
     const data = await res.json();
     setProject(data);
     console.log(data);
