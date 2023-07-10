@@ -8,7 +8,7 @@ const Hero = () => {
   const [Projects, setProjects] = useState([]);
 
   const getProducts = async () => {
-    const res = await fetch("http://localhost:5000/products");
+    const res = await fetch("https://nayvy-clone-api.onrender.com/products");
     const data = await res.json();
     setProjects(data);
     console.table(data);

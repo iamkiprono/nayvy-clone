@@ -67,7 +67,6 @@ const NewProductForm = () => {
       //   maxSizeMB: 1,
       //   maxWidthOrHeight: 1920,
       // };
-      
 
       // const compressedFile = await imageCompression(banner, options);
       // console.table(compressedFile);
@@ -81,7 +80,7 @@ const NewProductForm = () => {
       formData.append("currency", currency);
 
       const res = await axios.post(
-        "http://localhost:5000/products/",
+        "https://nayvy-clone-api.onrender.com/products/",
         formData,
         {
           headers: {
@@ -103,7 +102,7 @@ const NewProductForm = () => {
   return (
     <form className="max-w-7xl m-auto p-6">
       {/* <S3FORM /> */}
-   
+
       <TextField
         onChange={(e) => setname(e.target.value)}
         sx={{
