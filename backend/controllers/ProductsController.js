@@ -2,7 +2,7 @@ const Product = require("../models/ProductModel");
 
 // add product to db
 const addProduct = async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   const {
     name,
     description,
@@ -26,7 +26,7 @@ const addProduct = async (req, res) => {
 
     res.json(newProduct);
   } catch (error) {
-    console.log({ error: error.message });
+    // console.log({ error: error.message });
     res.status(400).json({ error: error.message });
   }
 };

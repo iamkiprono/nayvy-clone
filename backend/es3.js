@@ -14,7 +14,7 @@ const s3 = new AWS.S3();
 const uploadImage = async (req, res, next) => {
   try {
     const file = req.file;
-    console.log(file)
+    // console.log(file)
     if (!file) {
       throw Error("No file selected");
     }
@@ -30,7 +30,7 @@ const uploadImage = async (req, res, next) => {
     };
     
     const response = await s3.upload(params).promise();
-    console.log("Image uploaded successfully:", response);
+    // console.log("Image uploaded successfully:", response);
     
     
     // Delete the temporary file
