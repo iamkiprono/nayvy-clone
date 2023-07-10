@@ -7,6 +7,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import S3FORM from "./S3FORM";
 import axios from "axios";
 // import imageCompression from "browser-image-compression";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { useMutation } from "@tanstack/react-query";
 
 const NewProductForm = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -44,61 +46,48 @@ const NewProductForm = () => {
     },
   ];
 
-  const product = {
-    name,
-    description,
-    features: featureList,
-    link,
-    price,
-    currency,
-  };
-
   const addFeature = (feature) => {
     setFeatureList((featureList) => [...featureList, feature]);
     setFeature("");
   };
 
-  const addProduct = async (e) => {
-    e.preventDefault();
+  const addProduct = async () => {
+   
+    const token = await getAccessTokenSilently();
+    // const options = {
+    //   maxSizeMB: 1,
+    //   maxWidthOrHeight: 1920,
+    // };
 
-    try {
-      const token = await getAccessTokenSilently();
-      // const options = {
-      //   maxSizeMB: 1,
-      //   maxWidthOrHeight: 1920,
-      // };
+    // const compressedFile = await imageCompression(banner, options);
+    // console.table(compressedFile);
+    const formData = new FormData();
+    formData.append("image", banner);
+    formData.append("name", name);
+    formData.append("description", description);
+    formData.append("features", featureList);
+    formData.append("link", link);
+    formData.append("price", price);
+    formData.append("currency", currency);
 
-      // const compressedFile = await imageCompression(banner, options);
-      // console.table(compressedFile);
-      const formData = new FormData();
-      formData.append("image", banner);
-      formData.append("name", name);
-      formData.append("description", description);
-      formData.append("features", featureList);
-      formData.append("link", link);
-      formData.append("price", price);
-      formData.append("currency", currency);
-
-      const res = await axios.post(
-        "https://nayvy-clone-api.onrender.com/products/",
-        formData,
-        {
-          headers: {
-            "content-type": "multipart/form-data",
-            authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log(res);
-      const newProduct = await res.data;
-
-      console.log(newProduct);
-    } catch (error) {
-      console.log(error);
-      console.log(error.response?.data?.error);
-      // console.log({ error: error.message });
-    }
+    const res = await axios.post(
+      "https://nayvy-clone-api.onrender.com/products/",
+      formData,
+      {
+        headers: {
+          "content-type": "multipart/form-data",
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(res);
+    const newProduct = await res.data;
+    return newProduct;
   };
+
+  const { mutate, data, isLoading, isError, error } = useMutation(addProduct);
+  console.log(data);
+
   return (
     <form className="max-w-7xl m-auto p-6">
       {/* <S3FORM /> */}
@@ -199,14 +188,20 @@ const NewProductForm = () => {
           ))}
         </TextField>
       </div>
-      <Button
+      <LoadingButton
+        loading={isLoading}
+        disabled={isLoading}
         type="submit"
-        onClick={addProduct}
+        onClick={(e) => {
+          e.preventDefault();
+          mutate();
+        }}
         sx={{ margin: "20px 0" }}
         variant="contained"
       >
         Create Product
-      </Button>
+      </LoadingButton>
+      {isError && <p className="text-red-700">{error.response.data.error}</p>}
     </form>
   );
 };
