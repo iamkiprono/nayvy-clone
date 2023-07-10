@@ -4,26 +4,44 @@ import Projects from "../Data/Projets";
 import ProjectDetailsCard from "./ProjectDetailsCard";
 import { useState } from "react";
 import { useEffect } from "react";
-
+import { useQuery } from "@tanstack/react-query";
 const ProjectDetails = () => {
-  const [Project, setProject] = useState([]);
   const { id } = useParams();
   const getSingleProject = async () => {
-    const res = await fetch(`https://nayvy-clone.vercel.app//products/${id}`);
+    const res = await fetch(
+      `https://nayvy-clone-api.onrender.com/products/${id}`
+    );
     const data = await res.json();
-    setProject(data);
+
     console.log(data);
+    return data;
   };
 
-  useEffect(() => {
-    getSingleProject();
-  }, []);
+  // useEffect(() => {
+  //   getSingleProject();
+  // }, []);
+
+  const {
+    data: Project,
+    error,
+    isError,
+
+    isFetching,
+  } = useQuery({
+    queryKey: ["project"],
+    queryFn: getSingleProject,
+  });
   return (
     <div>
       <div className="max-w-7xl m-auto flex justify-center p-6">
-        {Project.map((project) => {
-          return <ProjectDetailsCard key={project._id} Projects={project} />;
-        })}
+        {isError && <p>{error.message}</p>}
+        {isFetching
+          ? "Loading..."
+          : Project?.map((project) => {
+              return (
+                <ProjectDetailsCard key={project._id} Projects={project} />
+              );
+            })}
       </div>
     </div>
   );
