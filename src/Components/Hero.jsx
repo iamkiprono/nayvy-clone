@@ -4,6 +4,7 @@ import ListProject from "./ListProject";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { Box, Skeleton } from "@mui/material";
 
 const Hero = () => {
   const getProducts = async () => {
@@ -29,8 +30,20 @@ const Hero = () => {
 
   return (
     <div>
-      <div className="max-w-7xl m-auto p-6 flex gap-5 justify-center flex-wrap">
-        {isLoading && <p>Loading...</p>}
+      <div className="m-auto flex max-w-7xl flex-wrap justify-center gap-5 p-6">
+        {isLoading && (Array.from(new Array(6)) .map((skeleton, index)=>{
+          return(
+            <Box key={index} sx={{ width: 345, marginRight: 0.5, my: 5 ,height:300}}>
+            <Skeleton variant="rectangular" width={345} height={250} />
+            <Box sx={{ pt: 0.5 }}>
+              <Skeleton />
+              <Skeleton width="60%" />
+            </Box>
+          </Box>
+          )
+        })
+        
+        )}
         {isError && <p>{error.message}</p>}
         {Projects?.map((project) => {
           return <ProductCard key={project._id} project={project} />;
