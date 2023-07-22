@@ -194,6 +194,16 @@ const NewProductForm = () => {
             ))}
           </TextField>
         </div>
+        {isError && (
+          <Stack sx={{ width: "100%", position: "sticky" }} spacing={2}>
+            <Alert severity="error">{error.response.data.error}</Alert>
+          </Stack>
+        )}
+        {data && (
+          <Stack sx={{ width: "100%", position: "sticky" }} spacing={2}>
+            <Alert severity="success">{data.name} added</Alert>
+          </Stack>
+        )}
         <LoadingButton
           loading={isLoading}
           disabled={isLoading}
@@ -207,16 +217,7 @@ const NewProductForm = () => {
         >
           Create Product
         </LoadingButton>
-        {isError && (
-          <Stack sx={{ width: "100%", position: "sticky" }} spacing={2}>
-            <Alert severity="error">{error.response.data.error}</Alert>
-          </Stack>
-        )}
-        {data && (
-          <Stack sx={{ width: "100%", position: "sticky" }} spacing={2}>
-            <Alert severity="success">{data.name} added</Alert>
-          </Stack>
-        )}
+   
       </form>
     </>
   );
