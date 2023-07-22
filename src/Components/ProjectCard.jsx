@@ -11,12 +11,9 @@ import { Link } from "react-router-dom";
 
 export default function ProductCard({ project }) {
   return (
-    <Card sx={{ maxWidth: 345 }}>
-      <CardMedia
-        sx={{ height: 200 }}
-        image={project.image}
-        title="green iguana"
-      />
+    <Card sx={{ width: 345 }}>
+      <img className="h-[200px] object-cover" src={project.image} alt="" />
+      {/* <CardMedia sx={{ height: 200 , objectFit: "contain"}} image={project.image} /> */}
       <CardContent>
         <Box
           sx={{
@@ -28,14 +25,16 @@ export default function ProductCard({ project }) {
           <Typography gutterBottom variant="h5" component="div">
             {project.name}
           </Typography>
-          <Typography className="bg-[#DCFCE7] p-1 rounded-xl">
+          <Typography className="rounded-xl bg-[#DCFCE7] p-1">
             {project.live && "Live"}
           </Typography>
         </Box>
         <Typography variant="body2" color="#4b5563">
           {project.description}
         </Typography>
-        <Typography sx={{ color: "#4b5563" }}>{project.price} USD</Typography>
+        <p className="mt-2 font-bold">
+          {project.price} {project.currency}
+        </p>
         <CardActions>
           <Link to={project._id}>
             <Button variant="outlined">Details</Button>

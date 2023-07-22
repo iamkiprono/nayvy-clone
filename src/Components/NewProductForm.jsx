@@ -10,7 +10,13 @@ import axios from "axios";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useMutation } from "@tanstack/react-query";
 
+import Alert from "@mui/material/Alert";
+import Stack from "@mui/material/Stack";
+
 const NewProductForm = () => {
+  const notify = (name) =>
+    toast(`${name} added successfully`, { autoClose: false });
+
   const { getAccessTokenSilently } = useAuth0();
 
   const [featureList, setFeatureList] = useState([]);
@@ -52,7 +58,6 @@ const NewProductForm = () => {
   };
 
   const addProduct = async () => {
-   
     const token = await getAccessTokenSilently();
     // const options = {
     //   maxSizeMB: 1,
@@ -85,124 +90,135 @@ const NewProductForm = () => {
     return newProduct;
   };
 
-  const { mutate, data, isLoading, isError, error } = useMutation(addProduct);
+  const { mutate, isLoading, isError, error, data } = useMutation(addProduct);
+
   console.log(data);
-
   return (
-    <form className="max-w-7xl m-auto p-6">
-      {/* <S3FORM /> */}
+    <>
+      <form className="m-auto max-w-7xl p-6">
+        {/* <S3FORM /> */}
 
-      <TextField
-        onChange={(e) => setname(e.target.value)}
-        sx={{
-          margin: "20px 0",
-        }}
-        fullWidth
-        required
-        size="lg"
-        label="Name of project"
-      />
+        <TextField
+          onChange={(e) => setname(e.target.value)}
+          sx={{
+            margin: "20px 0",
+          }}
+          fullWidth
+          required
+          size="lg"
+          label="Name of project"
+        />
 
-      <TextField
-        onChange={(e) => setdescription(e.target.value)}
-        sx={{
-          margin: "20px 0",
-        }}
-        fullWidth
-        id="filled-multiline-flexible"
-        label="Description"
-        multiline
-        required
-      />
-      <p>Tell use what your code is about</p>
+        <TextField
+          onChange={(e) => setdescription(e.target.value)}
+          sx={{
+            margin: "20px 0",
+          }}
+          fullWidth
+          id="filled-multiline-flexible"
+          label="Description"
+          multiline
+          required
+        />
+        <p>Tell use what your code is about</p>
 
-      <TextField
-        required
-        value={feature}
-        onChange={(e) => setFeature(e.target.value)}
-        sx={{
-          margin: "20px 0",
-        }}
-        fullWidth
-        label="Features"
-        placeholder="Type in a feature then click 'add feature' to add multiple features"
-      />
-      <ul className="list-disc">
-        {featureList.map((f) => {
-          return <li className="italic">{f}</li>;
-        })}
-      </ul>
-      <Button onClick={() => addFeature(feature)} variant="outlined">
-        Add feature
-      </Button>
-      <p className="mt-4">Banner:</p>
-      <Input
-        required
-        accept="image/*"
-        onChange={(e) => {
-          const file = e.target.files[0];
-          setBanner(file);
-        }}
-        sx={{
-          margin: "20px 0",
-          padding: "50px ",
-        }}
-        size="lg"
-        type="file"
-      />
-      <TextField
-        required
-        onChange={(e) => setLink(e.target.value)}
-        sx={{
-          margin: "20px 0",
-        }}
-        fullWidth
-        label="Demo link"
-        placeholder="Live link of your project"
-      />
-      <div className="flex md:flex-row flex-col gap-4">
         <TextField
           required
-          onChange={(e) => setPrice(e.target.value)}
-          type="Number"
-          label="Price"
+          value={feature}
+          onChange={(e) => setFeature(e.target.value)}
+          sx={{
+            margin: "20px 0",
+          }}
           fullWidth
+          label="Features"
+          placeholder="Type in a feature then click 'add feature' to add multiple features"
+        />
+        <ul className="list-disc">
+          {featureList.map((f) => {
+            return <li className="italic">{f}</li>;
+          })}
+        </ul>
+        <Button onClick={() => addFeature(feature)} variant="outlined">
+          Add feature
+        </Button>
+        <p className="mt-4">Banner:</p>
+        <Input
+          required
+          accept="image/*"
+          onChange={(e) => {
+            const file = e.target.files[0];
+            setBanner(file);
+          }}
+          sx={{
+            margin: "20px 0",
+            padding: "50px ",
+          }}
+          size="lg"
+          type="file"
         />
         <TextField
           required
-          onChange={(e) => setCurrency(e.target.value)}
-          fullWidth
-          id="outlined-select-currency-native"
-          select
-          label="Currency"
-          defaultValue="EUR"
-          SelectProps={{
-            native: true,
+          onChange={(e) => setLink(e.target.value)}
+          sx={{
+            margin: "20px 0",
           }}
-          helperText="Please select your currency"
+          fullWidth
+          label="Demo link"
+          placeholder="Live link of your project"
+        />
+        <div className="flex flex-col gap-4 md:flex-row">
+          <TextField
+            required
+            onChange={(e) => setPrice(e.target.value)}
+            type="Number"
+            label="Price"
+            fullWidth
+          />
+          <TextField
+            required
+            onChange={(e) => setCurrency(e.target.value)}
+            fullWidth
+            id="outlined-select-currency-native"
+            select
+            label="Currency"
+            defaultValue="EUR"
+            SelectProps={{
+              native: true,
+            }}
+            helperText="Please select your currency"
+          >
+            {currencies.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </TextField>
+        </div>
+        <LoadingButton
+          loading={isLoading}
+          disabled={isLoading}
+          type="submit"
+          onClick={(e) => {
+            e.preventDefault();
+            mutate();
+          }}
+          sx={{ margin: "20px 0" }}
+          variant="contained"
         >
-          {currencies.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </TextField>
-      </div>
-      <LoadingButton
-        loading={isLoading}
-        disabled={isLoading}
-        type="submit"
-        onClick={(e) => {
-          e.preventDefault();
-          mutate();
-        }}
-        sx={{ margin: "20px 0" }}
-        variant="contained"
-      >
-        Create Product
-      </LoadingButton>
-      {isError && <p className="text-red-700">{error.response.data.error}</p>}
-    </form>
+          Create Product
+        </LoadingButton>
+        {isError && (
+          <Stack sx={{ width: "100%", position: "sticky" }} spacing={2}>
+            <Alert severity="error">{error.response.data.error}</Alert>
+          </Stack>
+        )}
+        {data && (
+          <Stack sx={{ width: "100%", position: "sticky" }} spacing={2}>
+            <Alert severity="success">{data.name} added</Alert>
+          </Stack>
+        )}
+      </form>
+    </>
   );
 };
 
