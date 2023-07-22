@@ -5,6 +5,7 @@ import ProjectDetailsCard from "./ProjectDetailsCard";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { Box, Skeleton } from "@mui/material";
 const ProjectDetails = () => {
   const { id } = useParams();
   const getSingleProject = async () => {
@@ -36,7 +37,15 @@ const ProjectDetails = () => {
       <div className="max-w-7xl m-auto flex justify-center p-6">
         {isError && <p>{error.message}</p>}
         {isFetching
-          ? "Loading..."
+          ? (
+            <Box sx={{ width: "100%", marginRight: 0.5, my: 5 ,height:300}}>
+            <Box sx={{ pt: 0.5 }}>
+              <Skeleton width="60%" />
+              <Skeleton />
+            </Box>
+            <Skeleton variant="rectangular" width="100%" height={250} />
+          </Box>
+          )
           : Project?.map((project) => {
               return (
                 <ProjectDetailsCard key={project._id} Projects={project} />
