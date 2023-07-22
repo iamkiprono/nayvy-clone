@@ -196,7 +196,7 @@ const NewProductForm = () => {
         </div>
         {isError && (
           <Stack sx={{ width: "100%", position: "sticky" }} spacing={2}>
-            <Alert severity="error">{error.response.data.error}</Alert>
+            <Alert severity="error">{error?.response?.data.error}</Alert>
           </Stack>
         )}
         {data && (

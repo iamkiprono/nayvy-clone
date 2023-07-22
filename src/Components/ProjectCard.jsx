@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 export default function ProductCard({ project }) {
   return (
     <Card sx={{ width: 345 }}>
-      <img className="h-[200px] object-cover" src={project.image} alt="" />
+      <img className="h-[200px] object-cover w-full" src={project.image} alt="" />
       {/* <CardMedia sx={{ height: 200 , objectFit: "contain"}} image={project.image} /> */}
       <CardContent>
         <Box
